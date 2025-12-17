@@ -449,23 +449,27 @@
 
       function loadQuestion() {
         const questionContainer = document.getElementById("question-container");
-        questionContainer.innerHTML = `
-            <h2>${questions[currentQuestion].question}</h2>
-            ${questions[currentQuestion].options
-              .map(
-                (option) => `
-              <label>
-                <input type="radio" name="option" value="${option}" />
-                ${
-                  option === questions[currentQuestion].answer
-                    ? `<span class="correct">${option}</span>`
-                    : option
-                }
-              </label><br>
-            `
-              )
-              .join("")}
-          `;
+        questionContainer.innerHTML = "";
+
+        const h2 = document.createElement("h2");
+        h2.textContent = questions[currentQuestion].question;
+        questionContainer.appendChild(h2);
+
+        questions[currentQuestion].options.forEach((option) => {
+          const label = document.createElement("label");
+
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = "option";
+          input.value = option;
+
+          label.appendChild(input);
+          label.appendChild(document.createTextNode(" " + option));
+
+          questionContainer.appendChild(label);
+          questionContainer.appendChild(document.createElement("br"));
+        });
+
         document.getElementById("question-info").textContent = `السؤال ${
           currentQuestion + 1
         } من ${questions.length}`;
